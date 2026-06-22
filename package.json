@@ -1,0 +1,13 @@
+{
+  "name": "github-actions-chrome-extension",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "test": "node test/parser.test.js",
+    "test:e2e": "playwright test",
+    "icons": "node scripts/generate-icons.js"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.44.0"
+  }
+}

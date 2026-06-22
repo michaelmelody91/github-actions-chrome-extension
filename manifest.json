@@ -1,0 +1,22 @@
+{
+  "manifest_version": 3,
+  "name": "GitHub Actions Repo Links",
+  "version": "0.1.0",
+  "description": "Turn `uses:` actions in GitHub workflow files into links to their source repositories.",
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://github.com/*/*/blob/*"],
+      "js": ["src/selectors.js", "src/parser.js", "src/content.js"],
+      "css": ["src/content.css"],
+      "run_at": "document_idle"
+    }
+  ],
+  "host_permissions": [
+    "https://raw.githubusercontent.com/*"
+  ]
+}
