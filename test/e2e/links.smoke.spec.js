@@ -1,6 +1,4 @@
 const { test, expect } = require('./fixtures');
-// Keep this in sync with the CTA padding in src/content.js.
-const ACTION_CTA_PADDING_RIGHT = 28;
 
 // Uses a stable public workflow file. Update this URL if the file moves.
 const TARGET = 'https://github.com/actions/checkout/blob/main/.github/workflows/test.yml';
@@ -35,7 +33,13 @@ test('injects repo-link affordances on a workflow page', async ({ page }) => {
   expect(metrics.width).toBeGreaterThanOrEqual(14);
   expect(metrics.height).toBeGreaterThanOrEqual(14);
   expect(metrics.parentPosition).not.toBe('static');
-  expect(parseFloat(metrics.parentPaddingRight)).toBeGreaterThanOrEqual(ACTION_CTA_PADDING_RIGHT);
+
+  const baselinePaddingRight = await page
+    .locator('[data-line-number]:not([data-gha-link])')
+    .first()
+    .evaluate((el) => parseFloat(getComputedStyle(el).paddingRight));
+
+  expect(parseFloat(metrics.parentPaddingRight)).toBeGreaterThan(baselinePaddingRight);
 });
 
 test('does not inject affordances on a non-workflow blob page', async ({ page }) => {
