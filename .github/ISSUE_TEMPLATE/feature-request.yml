@@ -1,0 +1,62 @@
+name: Feature Request
+description: Spec-first feature request for AI-driven planning and implementation.
+title: "[Feature] "
+labels:
+  - "status:needs-plan"
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Complete all sections. The planner agent reads this form to produce an implementation plan.
+        Vague or incomplete specs result in clarifying questions rather than a plan.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What problem does this solve? Who is affected and how?
+      placeholder: "As a user doing X, I face Y because Z."
+    validations:
+      required: true
+
+  - type: textarea
+    id: desired-behavior
+    attributes:
+      label: Desired behavior
+      description: What should the feature do when it works correctly?
+      placeholder: "When the user does X, the extension should Y."
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance-criteria
+    attributes:
+      label: Acceptance criteria
+      description: |
+        One or more Given/When/Then scenarios. Each criterion must be concrete and testable.
+        The builder targets these and the reviewer checks against them.
+      placeholder: |
+        - Given [context], When [action], Then [expected outcome]
+        - Given [context], When [action], Then [expected outcome]
+    validations:
+      required: true
+
+  - type: textarea
+    id: non-goals
+    attributes:
+      label: Non-goals
+      description: What is explicitly out of scope? ("None" is a valid answer.)
+      placeholder: "This feature will NOT handle..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: validation
+    attributes:
+      label: Validation
+      description: Which commands verify this feature works? The builder runs these before opening a PR.
+      value: |
+        - `npm test`
+        - `npm run test:e2e`
+    validations:
+      required: true
