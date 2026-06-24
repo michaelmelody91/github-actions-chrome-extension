@@ -5,6 +5,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  /* 18px hit area + 3px internal padding keeps the 14px SVG comfortably visible. */
   width: 18px;
   height: 18px;
   padding: 3px;
