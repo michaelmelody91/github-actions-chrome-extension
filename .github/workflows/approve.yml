@@ -10,7 +10,7 @@ jobs:
     # Only allow repo owner, org members, and explicit collaborators
     if: |
       github.event.issue.pull_request == null &&
-      trim(github.event.comment.body) == '/approve' &&
+      startsWith(github.event.comment.body, '/approve') &&
       (github.event.comment.author_association == 'OWNER' ||
        github.event.comment.author_association == 'MEMBER' ||
        github.event.comment.author_association == 'COLLABORATOR')
