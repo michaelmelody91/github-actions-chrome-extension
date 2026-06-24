@@ -5,6 +5,8 @@ on:
   slash_command:
     name: plan
     events: [issues, issue_comment]
+env:
+    GH_TOKEN: ${{ github.token }}
 permissions:
   contents: read
   issues: read
