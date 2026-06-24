@@ -1,0 +1,41 @@
+name: PR Opened — Set In-Review Status
+
+on:
+  pull_request:
+    types: [opened]
+
+jobs:
+  set-in-review:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      pull-requests: read
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - name: Extract linked issue number
+        id: linked
+        run: |
+          BODY=$(gh pr view "${{ github.event.pull_request.number }}" \
+            --repo "${{ github.repository }}" --json body --jq '.body // ""')
+          ISSUE=$(echo "$BODY" | grep -oiE '(closes|fixes|resolves) #[0-9]+' \
+            | grep -oE '[0-9]+' | head -1)
+          echo "issue=${ISSUE:-}" >> "$GITHUB_OUTPUT"
+
+      - name: Strip current status labels from linked issue
+        if: steps.linked.outputs.issue != ''
+        run: |
+          ISSUE="${{ steps.linked.outputs.issue }}"
+          LABELS=$(gh issue view "$ISSUE" --repo "${{ github.repository }}" \
+            --json labels --jq '.labels[].name' | grep "^status:" || true)
+          for label in $LABELS; do
+            gh issue edit "$ISSUE" --repo "${{ github.repository }}" \
+              --remove-label "$label"
+          done
+
+      - name: Set status:in-review on linked issue
+        if: steps.linked.outputs.issue != ''
+        run: |
+          gh issue edit "${{ steps.linked.outputs.issue }}" \
+            --repo "${{ github.repository }}" \
+            --add-label "status:in-review"
