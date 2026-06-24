@@ -25,14 +25,14 @@
   // --- Affordance injection ---
 
   var MARKER = 'data-gha-link';
-  var CELL_CLASS = 'gha-action-cell';
 
   function injectAffordance(lineNumber, url) {
     try {
       var cell = queryFallback(SELECTORS.lineNumberCell, lineNumber);
       if (!cell) return;
       if (cell.getAttribute(MARKER) === String(lineNumber)) return; // idempotent
-      cell.classList.add(CELL_CLASS);
+      cell.style.position = 'relative';
+      cell.style.paddingRight = '28px';
 
       var link = document.createElement('a');
       link.href = url;

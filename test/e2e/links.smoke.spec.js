@@ -1,4 +1,5 @@
 const { test, expect } = require('./fixtures');
+// Keep this in sync with the CTA padding in src/content.js.
 const ACTION_CTA_PADDING_RIGHT = 28;
 
 // Uses a stable public workflow file. Update this URL if the file moves.
