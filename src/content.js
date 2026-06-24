@@ -25,6 +25,7 @@
   // --- Affordance injection ---
 
   var MARKER = 'data-gha-link';
+  var ACTION_CTA_PADDING_RIGHT = 28;
 
   function injectAffordance(lineNumber, url) {
     try {
@@ -32,7 +33,7 @@
       if (!cell) return;
       if (cell.getAttribute(MARKER) === String(lineNumber)) return; // idempotent
       cell.style.position = 'relative';
-      cell.style.paddingRight = '28px';
+      cell.style.paddingRight = ACTION_CTA_PADDING_RIGHT + 'px';
 
       var link = document.createElement('a');
       link.href = url;

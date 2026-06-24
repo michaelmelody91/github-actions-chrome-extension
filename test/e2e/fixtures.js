@@ -8,6 +8,8 @@ exports.test = base.extend({
   context: async ({}, use) => {
     const context = await chromium.launchPersistentContext('', {
       headless: false,
+      // Playwright navigates to live GitHub during smoke tests; ignoring HTTPS
+      // errors keeps the browser usable in this CI environment.
       ignoreHTTPSErrors: true,
       args: [
         `--disable-extensions-except=${extensionPath}`,
