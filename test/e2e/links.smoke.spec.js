@@ -1,4 +1,5 @@
 const { test, expect } = require('./fixtures');
+const ACTION_CTA_PADDING_RIGHT = 28;
 
 // Uses a stable public workflow file. Update this URL if the file moves.
 const TARGET = 'https://github.com/actions/checkout/blob/main/.github/workflows/test.yml';
@@ -13,10 +14,10 @@ test('injects repo-link affordances on a workflow page', async ({ page }) => {
   const href = await link.getAttribute('href');
   expect(href).toMatch(/^https:\/\/github\.com\//);
 
-  const metrics = await link.evaluate(function (el) {
-    var style = getComputedStyle(el);
-    var rect = el.getBoundingClientRect();
-    var parentStyle = getComputedStyle(el.parentElement);
+  const metrics = await link.evaluate((el) => {
+    const style = getComputedStyle(el);
+    const rect = el.getBoundingClientRect();
+    const parentStyle = getComputedStyle(el.parentElement);
 
     return {
       opacity: Number(style.opacity),
@@ -33,7 +34,7 @@ test('injects repo-link affordances on a workflow page', async ({ page }) => {
   expect(metrics.width).toBeGreaterThanOrEqual(14);
   expect(metrics.height).toBeGreaterThanOrEqual(14);
   expect(metrics.parentPosition).not.toBe('static');
-  expect(parseFloat(metrics.parentPaddingRight)).toBeGreaterThanOrEqual(28);
+  expect(parseFloat(metrics.parentPaddingRight)).toBeGreaterThanOrEqual(ACTION_CTA_PADDING_RIGHT);
 });
 
 test('does not inject affordances on a non-workflow blob page', async ({ page }) => {
