@@ -7,10 +7,33 @@ test('injects repo-link affordances on a workflow page', async ({ page }) => {
   await page.goto(TARGET, { waitUntil: 'domcontentloaded' });
 
   // Give the extension time to fetch raw YAML and inject links
-  await expect(page.locator('.gha-action-link').first()).toBeAttached({ timeout: 10_000 });
+  const link = page.locator('.gha-action-link').first();
+  await expect(link).toBeAttached({ timeout: 10_000 });
 
-  const href = await page.locator('.gha-action-link').first().getAttribute('href');
+  const href = await link.getAttribute('href');
   expect(href).toMatch(/^https:\/\/github\.com\//);
+
+  const metrics = await link.evaluate(function (el) {
+    var style = getComputedStyle(el);
+    var rect = el.getBoundingClientRect();
+    var parentStyle = getComputedStyle(el.parentElement);
+
+    return {
+      opacity: Number(style.opacity),
+      position: style.position,
+      width: rect.width,
+      height: rect.height,
+      parentPosition: parentStyle.position,
+      parentPaddingRight: parentStyle.paddingRight,
+    };
+  });
+
+  expect(metrics.position).toBe('absolute');
+  expect(metrics.opacity).toBeGreaterThanOrEqual(0.5);
+  expect(metrics.width).toBeGreaterThanOrEqual(14);
+  expect(metrics.height).toBeGreaterThanOrEqual(14);
+  expect(metrics.parentPosition).not.toBe('static');
+  expect(parseFloat(metrics.parentPaddingRight)).toBeGreaterThanOrEqual(28);
 });
 
 test('does not inject affordances on a non-workflow blob page', async ({ page }) => {
