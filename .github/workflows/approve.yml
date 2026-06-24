@@ -3,10 +3,6 @@ name: Approve and Delegate to Copilot
 on:
   issue_comment:
     types: [created]
-
-env:
-  GH_TOKEN: ${{ github.token }}
-
 jobs:
   approve:
     # Only run on issue comments (not PR comments) containing exactly "/approve"
@@ -48,8 +44,6 @@ jobs:
             --add-label "status:approved"
 
       - name: Assign to Copilot coding agent
-        env:
-          GH_TOKEN: ${{ secrets.GH_AW_AGENT_TOKEN }}
         run: |
           gh issue edit "$ISSUE" --repo "${{ github.repository }}" \
             --add-assignee "copilot"
