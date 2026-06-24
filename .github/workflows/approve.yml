@@ -4,6 +4,9 @@ on:
   issue_comment:
     types: [created]
 
+env:
+  GH_TOKEN: ${{ github.token }}
+
 jobs:
   approve:
     # Only run on issue comments (not PR comments) containing exactly "/approve"
