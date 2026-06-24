@@ -1,4 +1,4 @@
-const { test, expect } = require('@playwright/test');
+const { test, expect } = require('./fixtures');
 
 // Uses a stable public workflow file. Update this URL if the file moves.
 const TARGET = 'https://github.com/actions/checkout/blob/main/.github/workflows/test.yml';
@@ -18,7 +18,7 @@ test('does not inject affordances on a non-workflow blob page', async ({ page })
     waitUntil: 'domcontentloaded',
   });
   // Wait a moment for the extension to have run (it should be a no-op here)
-  await page.waitForTimeout(2000);
+  await page.waitForTimeout(5000);
   const count = await page.locator('.gha-action-link').count();
   expect(count).toBe(0);
 });
