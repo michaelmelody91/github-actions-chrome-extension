@@ -5,7 +5,7 @@ These instructions apply when Copilot is assigned to implement a feature issue i
 ## Before Writing Code
 
 1. Read the issue body and all comments. Locate the most recent comment posted by the planner
-   workflow — it contains the approved implementation plan. Implement only what that plan
+   workflow — it contains the approved implementation plan. Implement **only** what that plan
    describes.
 2. Read `CLAUDE.md` in full before editing any file. The architecture rules below come from it
    and are non-negotiable.
@@ -28,9 +28,11 @@ Every Given/When/Then criterion in the linked issue must be satisfied. If a crit
 untestable or would require violating an architecture rule, note the conflict explicitly in the
 PR description — do not skip it silently.
 
-## Before Requesting Review
+The criterion should be defiend in tests.
 
-Run both commands and confirm they exit 0:
+## Verifying Your Work Before Review
+
+Once the above is satisifed, run both commands and confirm they exit 0:
 
 ```sh
 npm test            # unit tests for parser.js — pure Node.js, no browser required
@@ -41,9 +43,12 @@ npm run test:e2e    # Playwright smoke test against live GitHub
 or any behavior visible in the browser. For pure refactors or parser-only changes, `npm test`
 alone is sufficient.
 
+**You must** run `npm run screenshot` which generates a screenshot of the extension on a live GitHub page and saves it at `test-screenshot.png`. Review that the image matches the desired output. If it doesn't iterate until it does
+
 ## Pull Request
 
 - Title: a concise imperative phrase describing what the feature does
 - Body: include `Closes #<issue-number>` so the issue closes automatically on merge
+- Include the screenshot from `npm run screenshot` for fast feedback.
 - Open as a **draft PR** until both required test commands pass
 - Do not auto-merge; the human merge gate is intentional

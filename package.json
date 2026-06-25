@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "test": "node test/parser.test.js",
-    "test:e2e": "playwright test",
+    "test:e2e": "playwright test --ignore-snapshots",
+    "screenshot": "playwright test test/e2e/screenshot.spec.js",
     "icons": "node scripts/generate-icons.js"
   },
   "devDependencies": {
