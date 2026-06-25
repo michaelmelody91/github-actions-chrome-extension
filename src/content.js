@@ -38,9 +38,12 @@
       if (!label) {
         label = document.createElement('span');
         label.className = 'gha-line-number';
+        label.textContent = String(lineNumber);
         cell.insertBefore(label, cell.firstChild);
       }
-      label.textContent = String(lineNumber);
+      if (label.textContent !== String(lineNumber)) {
+        label.textContent = String(lineNumber);
+      }
 
       var link = cell.querySelector('.gha-action-link');
       if (!link) {

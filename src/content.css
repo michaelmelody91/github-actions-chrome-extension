@@ -16,6 +16,7 @@
   transition: opacity 0.1s ease;
   line-height: 1;
   font-size: 12px;
+  /* Pull the CTA slightly past the cell edge so it reads as a neighbor, not a replacement. */
   position: absolute;
   right: -6px;
   top: 50%;
