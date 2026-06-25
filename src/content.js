@@ -32,6 +32,13 @@
       if (!cell) return;
       if (cell.getAttribute(MARKER) === String(lineNumber)) return; // idempotent
 
+      cell.textContent = '';
+      cell.style.position = 'relative';
+
+      var label = document.createElement('span');
+      label.className = 'gha-line-number';
+      label.textContent = String(lineNumber);
+
       var link = document.createElement('a');
       link.href = url;
       link.className = 'gha-action-link';
@@ -41,6 +48,8 @@
         '<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 16 16" aria-hidden="true">' +
         '<path fill-rule="evenodd" d="M8.22 2.97a.75.75 0 011.06 0l4.25 4.25a.75.75 0 010 1.06l-4.25 4.25a.75.75 0 01-1.06-1.06l2.97-2.97H3.75a.75.75 0 010-1.5h7.44L8.22 4.03a.75.75 0 010-1.06z"/>' +
         '</svg>';
+
+      cell.appendChild(label);
 
       // Store the line number so if the DOM node is re-used for a different line
       // (React virtualisation) we'll detect the mismatch and re-inject.

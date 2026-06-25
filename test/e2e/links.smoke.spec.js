@@ -13,6 +13,33 @@ test('injects repo-link affordances on a workflow page', async ({ page }) => {
   expect(href).toMatch(/^https:\/\/github\.com\//);
 });
 
+test('places the CTA beside the line number', async ({ page }) => {
+  await page.goto(TARGET, { waitUntil: 'domcontentloaded' });
+
+  const link = page.locator('.gha-action-link').first();
+  const cell = link.locator('xpath=..');
+  const lineNumber = cell.locator('.gha-line-number');
+
+  await expect(cell).toBeVisible({ timeout: 10_000 });
+  await expect(link).toBeVisible();
+
+  const [numberBox, linkBox] = await Promise.all([lineNumber.boundingBox(), link.boundingBox()]);
+  expect(numberBox).not.toBeNull();
+  expect(linkBox).not.toBeNull();
+  expect(linkBox.x).toBeGreaterThan(numberBox.x + numberBox.width + 2);
+  expect(Math.abs(linkBox.y - numberBox.y)).toBeLessThan(8);
+
+  const lineNumberValue = Number((await lineNumber.textContent()).trim());
+  const cellBoxes = await Promise.all(
+    [lineNumberValue - 1, lineNumberValue, lineNumberValue + 1].map((n) =>
+      page.locator(`[data-line-number="${n}"]`).first().boundingBox()
+    )
+  );
+  cellBoxes.forEach((box) => expect(box).not.toBeNull());
+  const xs = cellBoxes.map((box) => Math.round(box.x));
+  expect(new Set(xs).size).toBe(1);
+});
+
 test('does not inject affordances on a non-workflow blob page', async ({ page }) => {
   await page.goto('https://github.com/actions/checkout/blob/main/README.md', {
     waitUntil: 'domcontentloaded',
