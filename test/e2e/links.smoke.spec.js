@@ -26,11 +26,14 @@ test('places the CTA beside the line number', async ({ page }) => {
   await expect(lineNumberLabel).toBeVisible();
   await expect(link).toBeVisible();
 
-  const [numberBox, linkBox] = await Promise.all([lineNumberLabel.boundingBox(), link.boundingBox()]);
-  expect(numberBox).not.toBeNull();
-  expect(linkBox).not.toBeNull();
-  expect(linkBox.x).toBeGreaterThan(numberBox.x + numberBox.width + MIN_SPACING_PX);
-  expect(Math.abs(linkBox.y - numberBox.y)).toBeLessThan(VERTICAL_ALIGN_TOLERANCE_PX);
+  const [numberBoundingBox, linkBoundingBox] = await Promise.all([
+    lineNumberLabel.boundingBox(),
+    link.boundingBox(),
+  ]);
+  expect(numberBoundingBox).not.toBeNull();
+  expect(linkBoundingBox).not.toBeNull();
+  expect(linkBoundingBox.x).toBeGreaterThan(numberBoundingBox.x + numberBoundingBox.width + MIN_SPACING_PX);
+  expect(Math.abs(linkBoundingBox.y - numberBoundingBox.y)).toBeLessThan(VERTICAL_ALIGN_TOLERANCE_PX);
 
   const lineNumberValue = Number((await lineNumberLabel.textContent()).trim());
   // The neighboring rows are expected to keep the same left edge as the action row.
@@ -41,7 +44,7 @@ test('places the CTA beside the line number', async ({ page }) => {
   );
   neighborBoxes.forEach((box) => expect(box).not.toBeNull());
   neighborBoxes.forEach((box) => {
-    expect(Math.abs(box.x - numberBox.x)).toBeLessThanOrEqual(2);
+    expect(Math.abs(box.x - numberBoundingBox.x)).toBeLessThanOrEqual(2);
   });
 });
 

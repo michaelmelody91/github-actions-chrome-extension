@@ -22,6 +22,7 @@
   line-height: 1;
   font-size: 12px;
   /* Pull the CTA slightly past the cell edge so it reads as a neighbor, not a replacement. */
+  /* The negative offset cancels the cell padding so the icon sits just outside the number. */
   position: absolute;
   right: -6px;
   top: 50%;
