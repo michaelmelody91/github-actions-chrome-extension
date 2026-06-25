@@ -1,3 +1,7 @@
+.gha-line-number-cell {
+  position: relative;
+}
+
 .gha-line-number {
   display: inline-block;
 }

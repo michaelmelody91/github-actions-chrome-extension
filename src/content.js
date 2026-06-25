@@ -32,7 +32,7 @@
       if (!cell) return;
       if (cell.getAttribute(MARKER) === String(lineNumber)) return; // idempotent
 
-      cell.style.position = 'relative';
+      cell.classList.add('gha-line-number-cell');
 
       var label = cell.querySelector('.gha-line-number');
       if (!label) {

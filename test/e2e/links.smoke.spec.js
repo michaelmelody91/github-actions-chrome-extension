@@ -2,6 +2,8 @@ const { test, expect } = require('./fixtures');
 
 // Uses a stable public workflow file. Update this URL if the file moves.
 const TARGET = 'https://github.com/actions/checkout/blob/main/.github/workflows/test.yml';
+const MIN_SPACING_PX = 2; // Keep a visible gap between the number and CTA.
+const VERTICAL_ALIGN_TOLERANCE_PX = 8; // Allow for sub-pixel rendering differences.
 
 test('injects repo-link affordances on a workflow page', async ({ page }) => {
   await page.goto(TARGET, { waitUntil: 'domcontentloaded' });
@@ -27,8 +29,8 @@ test('places the CTA beside the line number', async ({ page }) => {
   const [numberBox, linkBox] = await Promise.all([lineNumber.boundingBox(), link.boundingBox()]);
   expect(numberBox).not.toBeNull();
   expect(linkBox).not.toBeNull();
-  expect(linkBox.x).toBeGreaterThan(numberBox.x + numberBox.width + 2);
-  expect(Math.abs(linkBox.y - numberBox.y)).toBeLessThan(8);
+  expect(linkBox.x).toBeGreaterThan(numberBox.x + numberBox.width + MIN_SPACING_PX);
+  expect(Math.abs(linkBox.y - numberBox.y)).toBeLessThan(VERTICAL_ALIGN_TOLERANCE_PX);
 
   const lineNumberValue = Number((await lineNumber.textContent()).trim());
   const neighborBoxes = await Promise.all(
