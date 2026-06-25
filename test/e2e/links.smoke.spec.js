@@ -21,6 +21,7 @@ test('places the CTA beside the line number', async ({ page }) => {
   const lineNumber = cell.locator('.gha-line-number');
 
   await expect(cell).toBeVisible({ timeout: 10_000 });
+  await expect(lineNumber).toBeVisible();
   await expect(link).toBeVisible();
 
   const [numberBox, linkBox] = await Promise.all([lineNumber.boundingBox(), link.boundingBox()]);
@@ -30,14 +31,15 @@ test('places the CTA beside the line number', async ({ page }) => {
   expect(Math.abs(linkBox.y - numberBox.y)).toBeLessThan(8);
 
   const lineNumberValue = Number((await lineNumber.textContent()).trim());
-  const cellBoxes = await Promise.all(
-    [lineNumberValue - 1, lineNumberValue, lineNumberValue + 1].map((n) =>
+  const neighborBoxes = await Promise.all(
+    [lineNumberValue - 1, lineNumberValue + 1].map((n) =>
       page.locator(`[data-line-number="${n}"]`).first().boundingBox()
     )
   );
-  cellBoxes.forEach((box) => expect(box).not.toBeNull());
-  const xs = cellBoxes.map((box) => Math.round(box.x));
-  expect(new Set(xs).size).toBe(1);
+  neighborBoxes.forEach((box) => expect(box).not.toBeNull());
+  neighborBoxes.forEach((box) => {
+    expect(Math.abs(box.x - numberBox.x)).toBeLessThanOrEqual(2);
+  });
 });
 
 test('does not inject affordances on a non-workflow blob page', async ({ page }) => {

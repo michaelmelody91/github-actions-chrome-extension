@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "test": "node test/parser.test.js",
-    "test:e2e": "playwright test --ignore-snapshots",
-    "screenshot": "playwright test test/e2e/screenshot.spec.js",
+    "test:e2e": "PW_IGNORE_HTTPS_ERRORS=1 playwright test --ignore-snapshots",
+    "screenshot": "PW_IGNORE_HTTPS_ERRORS=1 playwright test test/e2e/screenshot.spec.js",
     "icons": "node scripts/generate-icons.js"
   },
   "devDependencies": {
