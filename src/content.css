@@ -1,5 +1,6 @@
 .gha-line-number-cell {
   position: relative;
+  overflow: visible;
 }
 
 .gha-line-number {

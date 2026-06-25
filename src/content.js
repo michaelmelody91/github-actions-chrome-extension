@@ -41,6 +41,8 @@
         label.textContent = String(lineNumber);
         cell.insertBefore(label, cell.firstChild);
       }
+      // GitHub currently renders these cells as plain numeric text, so we keep
+      // the visible number in a span we control and place the CTA beside it.
       if (label.textContent !== String(lineNumber)) {
         label.textContent = String(lineNumber);
       }
@@ -55,9 +57,13 @@
           '</svg>';
         cell.appendChild(link);
       }
-      link.href = url;
-      link.setAttribute('aria-label', 'Open action repository');
-      link.title = 'Open action repository';
+      if (link.href !== url) link.href = url;
+      if (link.getAttribute('aria-label') !== 'Open action repository') {
+        link.setAttribute('aria-label', 'Open action repository');
+      }
+      if (link.title !== 'Open action repository') {
+        link.title = 'Open action repository';
+      }
 
       // Store the line number so if the DOM node is re-used for a different line
       // (React virtualisation) we'll detect the mismatch and re-inject.

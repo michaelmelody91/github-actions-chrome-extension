@@ -20,19 +20,20 @@ test('places the CTA beside the line number', async ({ page }) => {
 
   const link = page.locator('.gha-action-link').first();
   const cell = link.locator('xpath=..');
-  const lineNumber = cell.locator('.gha-line-number');
+  const lineNumberLabel = cell.locator('.gha-line-number');
 
   await expect(cell).toBeVisible({ timeout: 10_000 });
-  await expect(lineNumber).toBeVisible();
+  await expect(lineNumberLabel).toBeVisible();
   await expect(link).toBeVisible();
 
-  const [numberBox, linkBox] = await Promise.all([lineNumber.boundingBox(), link.boundingBox()]);
+  const [numberBox, linkBox] = await Promise.all([lineNumberLabel.boundingBox(), link.boundingBox()]);
   expect(numberBox).not.toBeNull();
   expect(linkBox).not.toBeNull();
   expect(linkBox.x).toBeGreaterThan(numberBox.x + numberBox.width + MIN_SPACING_PX);
   expect(Math.abs(linkBox.y - numberBox.y)).toBeLessThan(VERTICAL_ALIGN_TOLERANCE_PX);
 
-  const lineNumberValue = Number((await lineNumber.textContent()).trim());
+  const lineNumberValue = Number((await lineNumberLabel.textContent()).trim());
+  // The neighboring rows are expected to keep the same left edge as the action row.
   const neighborBoxes = await Promise.all(
     [lineNumberValue - 1, lineNumberValue + 1].map((n) =>
       page.locator(`[data-line-number="${n}"]`).first().boundingBox()

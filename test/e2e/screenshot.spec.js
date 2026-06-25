@@ -4,6 +4,8 @@ const path = require('path');
 const TARGET = 'https://github.com/actions/checkout/blob/main/.github/workflows/test.yml';
 const OUT = path.resolve(__dirname, '../../test-screenshot.png');
 
+test.setTimeout(60000);
+
 test('screenshot workflow page with extension active', async ({ page }) => {
   await page.goto(TARGET, { waitUntil: 'domcontentloaded' });
   await page.locator('.gha-action-link').first().waitFor({ timeout: 10_000 });
