@@ -2,6 +2,8 @@ const { test, expect } = require('./fixtures');
 
 // Uses a stable public workflow file. Update this URL if the file moves.
 const TARGET = 'https://github.com/actions/checkout/blob/main/.github/workflows/test.yml';
+const ALIGNMENT_TOLERANCE = 1; // Sub-pixel rounding can vary slightly across browsers.
+const MIN_GAP = 2;
 
 test('injects repo-link affordances on a workflow page', async ({ page }) => {
   await page.goto(TARGET, { waitUntil: 'domcontentloaded' });
@@ -13,23 +15,24 @@ test('injects repo-link affordances on a workflow page', async ({ page }) => {
   const href = await actionLink.getAttribute('href');
   expect(href).toMatch(/^https:\/\/github\.com\//);
 
-  await expect(actionLink).toBeAttached({ timeout: 10_000 });
+  const lineNumber = await actionLink.evaluate((el) => {
+    const lineCell = el.closest('[data-line-number]');
+    return lineCell ? lineCell.getAttribute('data-line-number') : null;
+  });
+  await actionLink.scrollIntoViewIfNeeded();
 
-  const lineCell = actionLink.locator('xpath=ancestor-or-self::*[@data-line-number][1]');
-  await lineCell.scrollIntoViewIfNeeded();
-
-  const lineNumber = await lineCell.getAttribute('data-line-number');
+  expect(lineNumber).toBeTruthy();
   const lineBox = await visibleLineBox(page, Number(lineNumber));
   const prevBox = await visibleLineBox(page, Number(lineNumber) - 1);
   const nextBox = await visibleLineBox(page, Number(lineNumber) + 1);
   const linkBox = await actionLink.boundingBox();
 
-  expect(lineNumber).toBeTruthy();
-  expect(lineBox && linkBox).toBeTruthy();
-  expect(linkBox.x).toBeGreaterThan(lineBox.x + lineBox.width + 1);
+  expect(lineBox).toBeTruthy();
+  expect(linkBox).toBeTruthy();
+  expect(linkBox.x).toBeGreaterThan(lineBox.x + lineBox.width + MIN_GAP);
   if (prevBox && nextBox) {
-    expect(Math.abs(lineBox.x - prevBox.x)).toBeLessThan(1);
-    expect(Math.abs(lineBox.x - nextBox.x)).toBeLessThan(1);
+    expect(Math.abs(lineBox.x - prevBox.x)).toBeLessThan(ALIGNMENT_TOLERANCE);
+    expect(Math.abs(lineBox.x - nextBox.x)).toBeLessThan(ALIGNMENT_TOLERANCE);
   }
 });
 
@@ -44,10 +47,11 @@ test('does not inject affordances on a non-workflow blob page', async ({ page })
 });
 
 async function visibleLineBox(page, lineNumber) {
-  if (lineNumber <= 0) return null;
+  if (lineNumber < 1) return null;
 
   return page.evaluate((n) => {
-    const nodes = Array.from(document.querySelectorAll('[data-line-number="' + n + '"]'));
+    const selector = `[data-line-number="${CSS.escape(String(n))}"]`;
+    const nodes = Array.from(document.querySelectorAll(selector));
     const node = nodes.find((el) => {
       const rect = el.getBoundingClientRect();
       return rect.width > 0 && rect.height > 0;

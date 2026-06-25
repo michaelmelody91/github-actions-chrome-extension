@@ -1,11 +1,13 @@
 [data-gha-link] {
+  /* Keep the CTA beside the line number with a small, readable gap. */
+  --gha-link-offset: 4px;
   position: relative;
   overflow: visible;
 }
 
 .gha-action-link {
   position: absolute;
-  left: calc(100% + 4px);
+  left: calc(100% + var(--gha-link-offset));
   top: 50%;
   display: inline-flex;
   align-items: center;
