@@ -8,7 +8,7 @@ exports.test = base.extend({
   context: async ({}, use) => {
     const context = await chromium.launchPersistentContext('', {
       headless: false,
-      ignoreHTTPSErrors: true,
+      ignoreHTTPSErrors: process.env.CI === 'true',
       args: [
         `--disable-extensions-except=${extensionPath}`,
         `--load-extension=${extensionPath}`,

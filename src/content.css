@@ -1,6 +1,8 @@
 .gha-action-link {
   position: absolute;
-  left: calc(100% + 4px);
+  --gha-link-offset: 4px;
+  /* Keep a small visual gap from the line number while remaining attached to the cell. */
+  left: calc(100% + var(--gha-link-offset));
   top: 50%;
   display: inline-flex;
   align-items: center;
