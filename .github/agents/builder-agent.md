@@ -1,5 +1,6 @@
 ---
 name: Builder-Agent
+description: POC agent to take a GitHub Issue and build according to its defined plan
 ---
 
 # Builder Agent Instructions
@@ -9,8 +10,7 @@ name: Builder-Agent
 1. Read the issue body and all comments. Locate the most recent comment posted by the planner
    workflow — it contains the approved implementation plan, which is marked with a heading of **Implementation Plan**. Implement **only** what that plan
    describes.
-2. Read `CLAUDE.md` in full before editing any file. The architecture rules below come from it and are non-negotiable.
-
+  
 ## Architecture Rules
 
 - **No build step.** Do not introduce a bundler, compiler, or transpiler. The extension loads
@@ -44,7 +44,7 @@ npm run test:e2e    # Playwright smoke test against live GitHub
 or any behavior visible in the browser. For pure refactors or parser-only changes, `npm test`
 alone is sufficient.
 
-**You must** run `npm run screenshot` which generates a screenshot of the extension on a live GitHub page and saves it at `test-screenshot.png`. Review that the image matches the desired output. If it doesn't iterate until it does
+**You must** run `npm run screenshot` which generates a screenshot of the extension on a live GitHub page and saves it at `test-screenshot.png`. Review that the image matches the desired output. If it doesn't iterate until it does - this is a strict rule
 
 ## Pull Request
 
