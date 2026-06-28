@@ -3,7 +3,7 @@ emoji: 📋
 description: Reads a feature-request issue and posts either clarifying questions or a structured implementation plan.
 engine:
   id: copilot
-  model: claude-sonnet-4-5
+  model: claude-sonnet-4.5
 on:
   slash_command:
     name: plan
