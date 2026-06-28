@@ -74,11 +74,23 @@
     clearTimeout(debounceTimer);
   }
 
+  function clearAllMarkers() {
+    var marked = document.querySelectorAll('[' + MARKER + ']');
+    marked.forEach(function (cell) {
+      cell.removeAttribute(MARKER);
+      var existingLink = cell.querySelector('.gha-action-link');
+      if (existingLink) {
+        existingLink.remove();
+      }
+    });
+  }
+
   // --- Main ---
 
   function initialize() {
     actionMap.clear();
     disconnectObserver();
+    clearAllMarkers();
 
     var ctx = parseWorkflowUrl(location.href);
     if (!ctx) return;
