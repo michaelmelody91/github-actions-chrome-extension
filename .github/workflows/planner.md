@@ -1,6 +1,9 @@
 ---
 emoji: 📋
 description: Reads a feature-request issue and posts either clarifying questions or a structured implementation plan.
+engine:
+  id: copilot
+  model: claude-sonnet-4-5
 on:
   slash_command:
     name: plan
@@ -79,10 +82,11 @@ If the spec is insufficient:
 
 If the spec is sufficient, post a comment with the following four sections:
 
-1. **Approach** — one paragraph summarizing the implementation strategy
+1. **Approach** — one paragraph summarizing the implementation strategy. Include an explanation of your rationalie.
 2. **File-level impact** — a table of files to create/modify/delete with a brief reason for each
-3. **Edge cases and risks** — a bullet list of non-obvious concerns the builder should watch for
-4. **Validation plan** — each acceptance criterion from the issue mapped to the test commands
+3. **Key code changes** - Define new functions that are to be added, functions that are to be updated or any other key details that can be represented in a sample diff or pseudo-code.
+4. **Edge cases and risks** — a bullet list of non-obvious concerns the builder should watch for
+5. **Validation plan** — each acceptance criterion from the issue mapped to the test commands
    in the Validation field
 
 Then:

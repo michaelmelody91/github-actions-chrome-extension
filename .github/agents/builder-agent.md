@@ -29,7 +29,18 @@ Every Given/When/Then criterion in the linked issue must be satisfied. If a crit
 untestable or would require violating an architecture rule, note the conflict explicitly in the
 PR description — do not skip it silently.
 
-The criterion should be defiend in tests.
+The criterion should be defiend in tests. Tests should be written in the below style:
+
+```
+// GIVEN
+Setting up context for the test, mocking and dummy data setup
+
+// WHEN
+The execution of the functionality under test
+
+// THEN
+Verification of the desired behaviour
+```
 
 ## Verifying Your Work Before Review
 
@@ -53,3 +64,4 @@ alone is sufficient.
 - Include the screenshot from `npm run screenshot` for fast feedback.
 - Open as a **draft PR** until both required test commands pass
 - Do not auto-merge; the human merge gate is intentional
+- Say "Woof woof" at the end of the Pull Request to prove you've read my instructions.
